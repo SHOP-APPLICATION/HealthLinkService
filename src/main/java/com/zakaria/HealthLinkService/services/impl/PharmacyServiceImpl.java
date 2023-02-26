@@ -1,15 +1,11 @@
 package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.PharmacyRequest;
-import com.zakaria.HealthLinkService.dto.PharmacyResponse;
 import com.zakaria.HealthLinkService.mappers.PharmacyMapper;
-import com.zakaria.HealthLinkService.mappers.ZoneMapper;
 import com.zakaria.HealthLinkService.models.Address;
 import com.zakaria.HealthLinkService.models.Pharmacy;
-import com.zakaria.HealthLinkService.models.Specialty;
-import com.zakaria.HealthLinkService.repositories.AddressRepository;
 import com.zakaria.HealthLinkService.repositories.PharmacyRepository;
-import com.zakaria.HealthLinkService.repositories.ZoneRepository;
+import com.zakaria.HealthLinkService.services.AddressService;
 import com.zakaria.HealthLinkService.services.PharmacyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,30 +23,31 @@ public class PharmacyServiceImpl implements PharmacyService {
     @Autowired
     private PharmacyRepository pharmacyRepository;
     @Autowired
-    private AddressRepository addressRepository;
+    private AddressService addressService;
     @Autowired
     private PharmacyMapper pharmacyMapper;
 
 
     @Override
-    public PharmacyResponse add(PharmacyRequest pharmacyRequest) {
+    public Pharmacy add(PharmacyRequest pharmacyRequest) {
         Pharmacy pharmacy = pharmacyMapper.toEntity(pharmacyRequest);
-        Address address = addressRepository.save(pharmacy.getAddress())
-        return specialtyMapper.toDto(specialtyRepository.save(specialty));
+        Address address = addressService.add(pharmacyRequest.getAddress());
+        pharmacy.setAddress(address);
+        return pharmacyRepository.save(pharmacy);
     }
 
     @Override
-    public PharmacyResponse edit(UUID id, PharmacyRequest pharmacyRequest) {
+    public Pharmacy edit(UUID id, PharmacyRequest pharmacyRequest) {
         return null;
     }
 
     @Override
-    public PharmacyResponse get(UUID id) {
+    public Pharmacy get(UUID id) {
         return null;
     }
 
     @Override
-    public List<PharmacyResponse> all() {
+    public List<Pharmacy> all() {
         return null;
     }
 

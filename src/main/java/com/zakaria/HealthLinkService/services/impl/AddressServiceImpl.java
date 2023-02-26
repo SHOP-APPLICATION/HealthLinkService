@@ -2,8 +2,10 @@ package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.AddressRequest;
 import com.zakaria.HealthLinkService.dto.ZoneResponse;
+import com.zakaria.HealthLinkService.mappers.AddressMapper;
 import com.zakaria.HealthLinkService.models.Address;
 import com.zakaria.HealthLinkService.models.City;
+import com.zakaria.HealthLinkService.models.Zone;
 import com.zakaria.HealthLinkService.repositories.AddressRepository;
 import com.zakaria.HealthLinkService.services.AddressService;
 import com.zakaria.HealthLinkService.services.CityService;
@@ -22,13 +24,18 @@ import java.util.UUID;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
     private final CityService cityService;
     private final ZoneService zoneService;
 
     @Override
     public Address add(AddressRequest request) {
         City city = cityService.get(request.getCity());
-        return null;
+        Zone zone = zoneService.get(request.getZone());
+        Address address = addressMapper.toEntity(request);
+        address.setZone(zone);
+        address.setCity(city);
+        return addressRepository.save(address);
     }
 
     @Override

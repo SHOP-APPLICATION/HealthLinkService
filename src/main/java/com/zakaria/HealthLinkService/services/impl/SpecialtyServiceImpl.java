@@ -1,7 +1,6 @@
 package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.SpecialtyRequest;
-import com.zakaria.HealthLinkService.dto.SpecialtyResponse;
 import com.zakaria.HealthLinkService.enums.Status;
 import com.zakaria.HealthLinkService.mappers.SpecialtyMapper;
 import com.zakaria.HealthLinkService.models.Specialty;
@@ -28,28 +27,28 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     private SpecialtyMapper specialtyMapper;
 
     @Override
-    public SpecialtyResponse add(SpecialtyRequest specialtyRequest) {
+    public Specialty add(SpecialtyRequest specialtyRequest) {
         Specialty specialty = specialtyMapper.toEntity(specialtyRequest);
-        return specialtyMapper.toDto(specialtyRepository.save(specialty));
+        // specialtyMapper.toDto(specialtyRepository.save(specialty))
+        return specialtyRepository.save(specialty);
     }
 
     @Override
-    public SpecialtyResponse edit(UUID id, SpecialtyRequest specialtyRequest) {
+    public Specialty edit(UUID id, SpecialtyRequest specialtyRequest) {
         Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with id: " + id.toString()));
         specialty.setName(specialtyRequest.getName());
-        return specialtyMapper.toDto(specialtyRepository.save(specialty));
+        return specialtyRepository.save(specialty);
     }
 
     @Override
-    public SpecialtyResponse get(UUID id) {
+    public Specialty get(UUID id) {
         Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with id: " + id.toString()));
-        return specialtyMapper.toDto(specialty);
+        return specialty;
     }
 
     @Override
-    public List<SpecialtyResponse> all() {
-        List<Specialty> specialtys = specialtyRepository.findAll();
-        return specialtys.stream().map(specialtyMapper::toDto).collect(Collectors.toList());
+    public List<Specialty> all() {
+        return specialtyRepository.findAll();
     }
 
     @Override

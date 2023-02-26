@@ -1,7 +1,6 @@
 package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.CityRequest;
-import com.zakaria.HealthLinkService.dto.CityResponse;
 import com.zakaria.HealthLinkService.enums.Status;
 import com.zakaria.HealthLinkService.mappers.CityMapper;
 import com.zakaria.HealthLinkService.models.City;
@@ -35,17 +34,17 @@ public class CityServiceImpl implements CityService {
     private CityMapper cityMapper;
 
     @Override
-    public CityResponse add(CityRequest cityRequest) {
+    public City add(CityRequest cityRequest) {
         Zone zone = zoneRepository.findById(cityRequest.getZone())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found with id " + cityRequest.getZone().toString()));
 
         City city = cityMapper.toEntity(cityRequest);
         city.setZone(zone);
-       return cityMapper.toDto(cityRepository.save(city));
+       return cityRepository.save(city);
     }
 
     @Override
-    public CityResponse edit(UUID id, CityRequest cityRequest) {
+    public City edit(UUID id, CityRequest cityRequest) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "City not found with id " + id.toString()));
 
@@ -53,21 +52,20 @@ public class CityServiceImpl implements CityService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found with id " + cityRequest.getZone().toString()));
         city.setName(cityRequest.getName());
         city.setZone(zone);
-        return cityMapper.toDto(cityRepository.save(city));
+        return cityRepository.save(city);
     }
 
     @Override
-    public CityResponse get(UUID id) {
+    public City get(UUID id) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "City not found with id " + id.toString()));
 
-        return cityMapper.toDto(city);
+        return city;
     }
 
     @Override
-    public List<CityResponse> all() {
-        List<City> cities = cityRepository.findAll();
-        return cities.stream().map(cityMapper::toDto).collect(Collectors.toList());
+    public List<City> all() {
+        return cityRepository.findAll();
     }
 
     @Override

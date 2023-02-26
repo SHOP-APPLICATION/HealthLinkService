@@ -1,7 +1,6 @@
 package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.ZoneRequest;
-import com.zakaria.HealthLinkService.dto.ZoneResponse;
 import com.zakaria.HealthLinkService.enums.Status;
 import com.zakaria.HealthLinkService.mappers.ZoneMapper;
 import com.zakaria.HealthLinkService.models.Zone;
@@ -28,28 +27,29 @@ public class ZoneServiceImpl implements ZoneService {
     @Autowired
     private ZoneMapper zoneMapper;
     @Override
-    public ZoneResponse add(ZoneRequest zoneRequest) {
+    public Zone add(ZoneRequest zoneRequest) {
         Zone zone = zoneMapper.toEntity(zoneRequest);
-        return zoneMapper.toDto(zoneRepository.save(zone));
+        return zoneRepository.save(zone);
     }
 
     @Override
-    public ZoneResponse edit(UUID id, ZoneRequest zoneRequest) {
+    public Zone edit(UUID id, ZoneRequest zoneRequest) {
         Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Zone not found with id: " + id.toString()));
         zone.setName(zoneRequest.getName());
-        return zoneMapper.toDto(zoneRepository.save(zone));
+        return zoneRepository.save(zone);
     }
 
     @Override
-    public ZoneResponse get(UUID id) {
+    public Zone get(UUID id) {
         Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Zone not found with id: " + id.toString()));
-        return zoneMapper.toDto(zone);
+        return zone;
     }
 
     @Override
-    public List<ZoneResponse> all() {
-        List<Zone> zones = zoneRepository.findAll();
-        return zones.stream().map(zoneMapper::toDto).collect(Collectors.toList());
+    public List<Zone> all() {
+        // List<Zone> zones = zoneRepository.findAll();
+       // return zones.stream().map(zoneMapper::toDto).collect(Collectors.toList());
+        return zoneRepository.findAll();
     }
 
     @Override
