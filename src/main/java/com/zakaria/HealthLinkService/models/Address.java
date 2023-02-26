@@ -21,6 +21,13 @@ import java.util.UUID;
 public class Address {
     @Id
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "pharmacy_id", nullable = true)
+    private Pharmacy pharmacy;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", nullable = true)
+    private Doctor doctor;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="zone_id" , nullable = false)
     private Zone zone;

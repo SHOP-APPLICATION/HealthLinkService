@@ -21,6 +21,7 @@ public class DoctorRequest {
     private String name;
 
     private UUID specialty;
-    private AddressDto address;
+    @NotNull
+    private AddressRequest address;
     private Status status;
 }

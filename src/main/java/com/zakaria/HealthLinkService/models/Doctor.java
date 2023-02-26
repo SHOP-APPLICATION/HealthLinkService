@@ -11,6 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "doctors")
@@ -25,6 +27,8 @@ public class Doctor {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="specialty_id" , nullable = false)
     private Specialty specialty;
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Address> addresses = new ArrayList<>();
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="address_id" , nullable = false)
     private Address address;

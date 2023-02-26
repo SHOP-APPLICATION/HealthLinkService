@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class CityMapper {
 
     private final ModelMapper modelMapper;
-    private ZoneMapper zoneMapper;
+    private final ZoneMapper zoneMapper;
 
     public CityMapper(ModelMapper modelMapper,ZoneMapper zoneMapper) {
 
