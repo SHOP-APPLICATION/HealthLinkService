@@ -1,4 +1,4 @@
-package com.zakaria.HealthLinkService.controllers;
+package com.zakaria.HealthLinkService.exceptions;
 
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
