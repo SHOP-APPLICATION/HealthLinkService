@@ -14,7 +14,7 @@ public class AddressDto {
 
     private UUID id;
     private ZoneResponse zone;
-    private CityResponse city;
+    private CityAddress city;
     private String Street;
     private String address1;
     private String zipCode;

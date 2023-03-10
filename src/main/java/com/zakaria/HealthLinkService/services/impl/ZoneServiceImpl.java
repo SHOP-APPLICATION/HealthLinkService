@@ -2,6 +2,7 @@ package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.ZoneRequest;
 import com.zakaria.HealthLinkService.enums.Status;
+import com.zakaria.HealthLinkService.exceptions.ResourceNotFoundException;
 import com.zakaria.HealthLinkService.mappers.ZoneMapper;
 import com.zakaria.HealthLinkService.models.Zone;
 import com.zakaria.HealthLinkService.repositories.ZoneRepository;
@@ -29,19 +30,20 @@ public class ZoneServiceImpl implements ZoneService {
     @Override
     public Zone add(ZoneRequest zoneRequest) {
         Zone zone = zoneMapper.toEntity(zoneRequest);
+        zone.setId(UUID.randomUUID());
         return zoneRepository.save(zone);
     }
 
     @Override
     public Zone edit(UUID id, ZoneRequest zoneRequest) {
-        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Zone not found with id: " + id.toString()));
+        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Zone not found with id: " + id.toString()));
         zone.setName(zoneRequest.getName());
         return zoneRepository.save(zone);
     }
 
     @Override
     public Zone get(UUID id) {
-        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Zone not found with id: " + id.toString()));
+        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Zone not found with id: " + id.toString()));
         return zone;
     }
 
@@ -54,7 +56,7 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Override
     public boolean delete(UUID id) {
-        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found with id: " + id.toString()));
+        Zone zone = zoneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Zone not found with id: " + id.toString()));
         zone.setDeletedAt(LocalDateTime.now());
         zone.setStatus(Status.INACTIVE);
         zoneRepository.save(zone);

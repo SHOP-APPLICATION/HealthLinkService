@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 public class SpecialtyRequest {
     @NotNull
     @NotBlank
-    @Size(min = 3)
     private String name;
     @NotNull
     private Status status;

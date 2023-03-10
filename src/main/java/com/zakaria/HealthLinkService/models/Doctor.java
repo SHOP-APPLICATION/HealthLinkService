@@ -32,6 +32,7 @@ public class Doctor {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="address_id" , nullable = false)
     private Address address;
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

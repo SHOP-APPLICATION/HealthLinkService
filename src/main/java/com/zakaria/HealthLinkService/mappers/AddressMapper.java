@@ -25,7 +25,7 @@ public class AddressMapper {
     public AddressDto toDto(Address address) {
         AddressDto addressDto = modelMapper.map(address, AddressDto.class);
         addressDto.setZone(zoneMapper.toDto(address.getZone()));
-        addressDto.setCity(cityMapper.toDto(address.getCity()));
+        addressDto.setCity(cityMapper.toCityAddressDto(address.getCity()));
         return addressDto;
     }
 

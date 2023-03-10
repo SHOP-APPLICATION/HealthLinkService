@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: health-link-service
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - data:/data
 volumes:

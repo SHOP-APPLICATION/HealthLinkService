@@ -25,7 +25,7 @@ public class Zone {
     private String name;
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
     private List<City> cities;
-
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

@@ -40,12 +40,13 @@ public class DoctorController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('DOCTORS','ADMIN')")
     public ResponseEntity<DoctorResponse> get(@PathVariable UUID id){
         return new ResponseEntity<>(doctorMapper.toDto(doctorService.get(id)), HttpStatus.OK);
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('DOCTORS')")
+    @PreAuthorize("hasAnyAuthority('DOCTORS','ADMIN')")
     public ResponseEntity<List<DoctorResponse>> getAll () {
         List<DoctorResponse> doctors = doctorService.all().stream().map(doctorMapper::toDto).collect(Collectors.toList());
         return  ResponseEntity.ok(doctors);

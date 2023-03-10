@@ -1,5 +1,6 @@
 package com.zakaria.HealthLinkService.mappers;
 
+import com.zakaria.HealthLinkService.dto.CityAddress;
 import com.zakaria.HealthLinkService.dto.CityRequest;
 import com.zakaria.HealthLinkService.dto.CityResponse;
 import com.zakaria.HealthLinkService.models.City;
@@ -25,6 +26,10 @@ public class CityMapper {
         CityResponse cityDto = modelMapper.map(city, CityResponse.class);
         cityDto.setZone(zoneMapper.toDto(city.getZone()));
         return cityDto;
+    }
+    public CityAddress toCityAddressDto(City city) {
+        CityAddress cityAddress = modelMapper.map(city, CityAddress.class);
+        return cityAddress;
     }
 
     public City toEntity(CityRequest cityDto) {

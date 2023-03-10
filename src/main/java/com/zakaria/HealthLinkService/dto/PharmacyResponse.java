@@ -14,7 +14,7 @@ import java.util.UUID;
 public class PharmacyResponse {
     private UUID id;
     private String name;
-    private AddressDto addressDto;
+    private AddressDto address;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Status status;

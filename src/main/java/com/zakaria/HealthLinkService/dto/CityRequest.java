@@ -16,7 +16,6 @@ import java.util.UUID;
 public class CityRequest {
     @NotNull
     @NotBlank
-    @Size(min = 3)
     private String name;
     @NotNull
     private Status status;

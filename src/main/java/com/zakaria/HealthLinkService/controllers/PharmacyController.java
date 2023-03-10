@@ -30,29 +30,34 @@ public class PharmacyController {
     private PharmacyMapper pharmacyMapper;
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('PHARMACIES')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PharmacyResponse> save(@Valid @RequestBody PharmacyRequest requestDTO){
         return new ResponseEntity<>(pharmacyMapper.toDto(pharmacyService.add(requestDTO)), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<PharmacyResponse> edit(@Valid @RequestBody PharmacyRequest requestDTO, @PathVariable UUID id){
         return new ResponseEntity<>(pharmacyMapper.toDto(pharmacyService.edit(id, requestDTO)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> delete(@PathVariable UUID id) {
         pharmacyService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('PHARMACIES','ADMIN')")
     public ResponseEntity<PharmacyResponse> get(@PathVariable UUID id){
+        log.info("ok ... OK");
+        System.out.println("her iam i ");
         return new ResponseEntity<>(pharmacyMapper.toDto(pharmacyService.get(id)), HttpStatus.OK);
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('PHARMACIES')")
+    @PreAuthorize("hasAnyAuthority('PHARMACIES','ADMIN')")
     public ResponseEntity<List<PharmacyResponse>> getAll () {
         List<PharmacyResponse> pharmacies = pharmacyService.all().stream().map(pharmacyMapper::toDto).collect(Collectors.toList());
-        return  ResponseEntity.ok(pharmacies);
+        return new ResponseEntity<>(pharmacies, HttpStatus.OK);
     }
 }

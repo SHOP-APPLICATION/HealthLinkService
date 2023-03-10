@@ -3,9 +3,11 @@ package com.zakaria.HealthLinkService.services.impl;
 import com.zakaria.HealthLinkService.dto.AddressRequest;
 import com.zakaria.HealthLinkService.dto.DoctorRequest;
 import com.zakaria.HealthLinkService.enums.Status;
+import com.zakaria.HealthLinkService.exceptions.ResourceNotFoundException;
 import com.zakaria.HealthLinkService.mappers.DoctorMapper;
 import com.zakaria.HealthLinkService.models.Address;
 import com.zakaria.HealthLinkService.models.Doctor;
+import com.zakaria.HealthLinkService.models.Pharmacy;
 import com.zakaria.HealthLinkService.models.Specialty;
 import com.zakaria.HealthLinkService.repositories.DoctorRepository;
 import com.zakaria.HealthLinkService.services.AddressService;
@@ -40,17 +42,21 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor add(DoctorRequest doctorRequest) {
+
         Doctor doctor = doctorMapper.toEntity(doctorRequest);
         Specialty specialty = specialtyService.get(doctorRequest.getSpecialty());
-        Address address = addressService.add(doctorRequest.getAddress());
-        doctor.getAddresses().add(address);
+
+        doctor.setId(UUID.randomUUID());
         doctor.setSpecialty(specialty);
-        return doctorRepository.save(doctor);
+        Doctor svaedDoctor = doctorRepository.save(doctor);
+        Address address = addressService.addToDoctor(doctorRequest.getAddress(), svaedDoctor);
+        svaedDoctor.getAddresses().add(address);
+        return svaedDoctor;
     }
 
     @Override
     public Doctor edit(UUID id, DoctorRequest doctorRequest) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor not found with id: " + id.toString()));
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Doctor not found with id: " + id.toString()));
         Specialty specialty = specialtyService.get(doctorRequest.getSpecialty());
         Address currentAddress = doctor.getAddresses().stream()
                 .filter(a -> a.getStatus().equals(Status.ACTIVE))
@@ -64,7 +70,7 @@ public class DoctorServiceImpl implements DoctorService {
                 && currentAddress.getZone().getId().equals(newAddress.getZone()))
         ) {
             addressService.delete(currentAddress.getId());
-            Address address = addressService.add(doctorRequest.getAddress());
+            Address address = addressService.addToDoctor(doctorRequest.getAddress(), doctor);
             doctor.getAddresses().add(address);
         }
         doctor.setSpecialty(specialty);
@@ -73,7 +79,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor get(UUID id) {
-        return doctorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor not found with id: " + id.toString()));
+        return doctorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Doctor not found with id: " + id.toString()));
     }
 
     @Override
@@ -84,7 +90,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public boolean delete(UUID id) {
 
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor not found with id: " + id.toString()));
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "Doctor not found with id: " + id.toString()));
         doctor.setDeletedAt(LocalDateTime.now());
         doctor.setStatus(Status.INACTIVE);
         doctorRepository.save(doctor);

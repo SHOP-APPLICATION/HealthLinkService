@@ -1,18 +1,14 @@
 package com.zakaria.HealthLinkService.dto;
 
 import com.zakaria.HealthLinkService.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Data
+@Builder @Getter @Setter
 public class CityResponse {
     private UUID id;
     private String name;

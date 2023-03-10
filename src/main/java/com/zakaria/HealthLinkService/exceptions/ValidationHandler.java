@@ -1,4 +1,4 @@
-package com.zakaria.HealthLinkService.controllers;
+package com.zakaria.HealthLinkService.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
-@Slf4j
 public class ValidationHandler extends ResponseEntityExceptionHandler {
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -54,7 +52,7 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-*/
+
 
     // Handle 404 Not Found errors
     @ExceptionHandler(value = {NoHandlerFoundException.class})
@@ -62,14 +60,14 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
         String bodyOfResponse = "Resource Not Found: " + ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
-
-    
+*/
+/*
 // Handle 500 Internal Server Error errors
 @ExceptionHandler(value = {Exception.class})
 protected ResponseEntity<Object> handleInternalServerError(Exception ex, WebRequest request) {
     String bodyOfResponse = "Internal Server Error: " + ex.getMessage();
     return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-}
+}*/
 
     // Handle 403 Forbidden errors
     @ExceptionHandler(value = AccessDeniedException.class)
@@ -77,6 +75,7 @@ protected ResponseEntity<Object> handleInternalServerError(Exception ex, WebRequ
         ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
     }
+
 
 
     static class ApiError {

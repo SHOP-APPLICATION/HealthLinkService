@@ -2,6 +2,7 @@ package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.SpecialtyRequest;
 import com.zakaria.HealthLinkService.enums.Status;
+import com.zakaria.HealthLinkService.exceptions.ResourceNotFoundException;
 import com.zakaria.HealthLinkService.mappers.SpecialtyMapper;
 import com.zakaria.HealthLinkService.models.Specialty;
 import com.zakaria.HealthLinkService.repositories.SpecialtyRepository;
@@ -29,20 +30,21 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     @Override
     public Specialty add(SpecialtyRequest specialtyRequest) {
         Specialty specialty = specialtyMapper.toEntity(specialtyRequest);
+        specialty.setId(UUID.randomUUID());
         // specialtyMapper.toDto(specialtyRepository.save(specialty))
         return specialtyRepository.save(specialty);
     }
 
     @Override
     public Specialty edit(UUID id, SpecialtyRequest specialtyRequest) {
-        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with id: " + id.toString()));
+        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Specialty not found with id: " + id.toString()));
         specialty.setName(specialtyRequest.getName());
         return specialtyRepository.save(specialty);
     }
 
     @Override
     public Specialty get(UUID id) {
-        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with id: " + id.toString()));
+        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Specialty not found with id: " + id.toString()));
         return specialty;
     }
 
@@ -53,7 +55,7 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public boolean delete(UUID id) {
-        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with id: " + id.toString()));
+        Specialty specialty = specialtyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Specialty not found with id: " + id.toString()));
         specialty.setDeletedAt(LocalDateTime.now());
         specialty.setStatus(Status.INACTIVE);
         specialtyRepository.save(specialty);

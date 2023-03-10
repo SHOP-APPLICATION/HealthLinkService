@@ -2,6 +2,7 @@ package com.zakaria.HealthLinkService.services.impl;
 
 import com.zakaria.HealthLinkService.dto.CityRequest;
 import com.zakaria.HealthLinkService.enums.Status;
+import com.zakaria.HealthLinkService.exceptions.ResourceNotFoundException;
 import com.zakaria.HealthLinkService.mappers.CityMapper;
 import com.zakaria.HealthLinkService.models.City;
 import com.zakaria.HealthLinkService.models.Zone;
@@ -36,20 +37,21 @@ public class CityServiceImpl implements CityService {
     @Override
     public City add(CityRequest cityRequest) {
         Zone zone = zoneRepository.findById(cityRequest.getZone())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found with id " + cityRequest.getZone().toString()));
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found with id " + cityRequest.getZone().toString()));
 
         City city = cityMapper.toEntity(cityRequest);
         city.setZone(zone);
+        city.setId(UUID.randomUUID());
        return cityRepository.save(city);
     }
 
     @Override
     public City edit(UUID id, CityRequest cityRequest) {
         City city = cityRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "City not found with id " + id.toString()));
+                .orElseThrow(() -> new ResourceNotFoundException( "City not found with id " + id.toString()));
 
         Zone zone = zoneRepository.findById(cityRequest.getZone())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found with id " + cityRequest.getZone().toString()));
+                .orElseThrow(() -> new ResourceNotFoundException( "Zone not found with id " + cityRequest.getZone().toString()));
         city.setName(cityRequest.getName());
         city.setZone(zone);
         return cityRepository.save(city);
@@ -58,7 +60,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public City get(UUID id) {
         City city = cityRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "City not found with id " + id.toString()));
+                .orElseThrow(() -> new ResourceNotFoundException( "City not found with id " + id.toString()));
 
         return city;
     }
@@ -70,7 +72,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean delete(UUID id) {
-        City city = cityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "city not found with id: " + id.toString()));
+        City city = cityRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException( "city not found with id: " + id.toString()));
         city.setDeletedAt(LocalDateTime.now());
         city.setStatus(Status.INACTIVE);
         cityRepository.save(city);

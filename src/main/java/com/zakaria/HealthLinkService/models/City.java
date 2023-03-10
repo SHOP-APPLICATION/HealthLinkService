@@ -20,7 +20,7 @@ public class City {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="zone_id" , nullable = false)
     private Zone zone;
-
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

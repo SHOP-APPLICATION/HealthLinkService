@@ -24,8 +24,10 @@ public class Pharmacy {
     @Id
     private UUID id;
     private String name;
+    private String phone;
     @OneToMany(mappedBy = "pharmacy", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

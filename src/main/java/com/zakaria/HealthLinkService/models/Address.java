@@ -22,7 +22,7 @@ public class Address {
     @Id
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_id", nullable = true)
     private Pharmacy pharmacy;
     @ManyToOne
@@ -37,7 +37,7 @@ public class Address {
     private String Street;
     private String address1;
     private String zipCode;
-
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
