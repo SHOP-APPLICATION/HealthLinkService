@@ -1,10 +1,11 @@
 package com.zakaria.HealthLinkService.dto;
 
-import brave.internal.Nullable;
 import com.zakaria.HealthLinkService.enums.Status;
+import io.micrometer.core.lang.Nullable;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.UUID;
 
 @AllArgsConstructor

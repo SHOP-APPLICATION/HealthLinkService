@@ -7,7 +7,6 @@ import com.zakaria.HealthLinkService.exceptions.ResourceNotFoundException;
 import com.zakaria.HealthLinkService.mappers.DoctorMapper;
 import com.zakaria.HealthLinkService.models.Address;
 import com.zakaria.HealthLinkService.models.Doctor;
-import com.zakaria.HealthLinkService.models.Pharmacy;
 import com.zakaria.HealthLinkService.models.Specialty;
 import com.zakaria.HealthLinkService.repositories.DoctorRepository;
 import com.zakaria.HealthLinkService.services.AddressService;
@@ -15,10 +14,8 @@ import com.zakaria.HealthLinkService.services.DoctorService;
 import com.zakaria.HealthLinkService.services.SpecialtyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;

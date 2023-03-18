@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +24,6 @@ public class DoctorController {
     private DoctorMapper doctorMapper;
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('DOCTORS')")
     public ResponseEntity<DoctorResponse> save(@Valid @RequestBody DoctorRequest requestDTO){
         return new ResponseEntity<>(doctorMapper.toDto(doctorService.add(requestDTO)), HttpStatus.CREATED);
     }
@@ -40,13 +38,11 @@ public class DoctorController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('DOCTORS','ADMIN')")
     public ResponseEntity<DoctorResponse> get(@PathVariable UUID id){
         return new ResponseEntity<>(doctorMapper.toDto(doctorService.get(id)), HttpStatus.OK);
     }
 
     @GetMapping()
-    @PreAuthorize("hasAnyAuthority('DOCTORS','ADMIN')")
     public ResponseEntity<List<DoctorResponse>> getAll () {
         List<DoctorResponse> doctors = doctorService.all().stream().map(doctorMapper::toDto).collect(Collectors.toList());
         return  ResponseEntity.ok(doctors);

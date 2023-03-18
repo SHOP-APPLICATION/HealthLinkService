@@ -3,7 +3,6 @@ package com.zakaria.HealthLinkService.exceptions;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,11 +30,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
  // Handle 403 Forbidden errors
 
-    @ExceptionHandler(value = AccessDeniedException.class)
+    /*@ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
+    }*/
 
 
     // Handle 404 Not Found errors
